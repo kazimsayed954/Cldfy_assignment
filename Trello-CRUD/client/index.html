@@ -42,19 +42,26 @@
           }
 
           // Construct API URL
-          const apiUrl = `https://api.trello.com/1/cards?idList=65caed41d44db01c21380c31&key=b37ab7754b58302914cba13467c9ac20&token=ATTA4d27fffa3b67a79b218e6ee6bde696b7226a808e1a9ed546d11fae4a0dc490879D5BAABE&name=${encodeURIComponent(
-            name
-          )}&desc=${encodeURIComponent(description)}&due=${encodeURIComponent(
-            dueDate
-          )}&start=${encodeURIComponent(startDate)}`;
+          const apiUrl = `http://localhost:4000/add`;
 
           // Make API call
           fetch(apiUrl, {
             method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              desc: description,
+              name,
+              due: dueDate,
+              start: startDate,
+            }),
           })
             .then((response) => response.json())
             .then((data) => {
               alert("Trello card created successfully!");
+              // Reset form fields
+              event.target.reset();
             })
             .catch((error) => {
               console.error("Error:", error);
@@ -65,4 +72,4 @@
   </body>
 </html>
 <!-- meverik850@tospage.com -->
-<!-- Test@123 -->
+<!-- Tospage@123 -->

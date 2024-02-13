@@ -1,18 +1,29 @@
 const axios = require('axios');
+const Shopify = require('shopify-api-node');
 
 // Shopify API key and Pipedrive API key
 const SHOPIFY_API_KEY = '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';
 const PIPEDRIVE_API_KEY = 'b9914497004bc1851bc9cadca83aca295bd6caf7';
 
+const shopify = new Shopify({
+    shopName: '07b36d-7.myshopify.com',
+    accessToken: SHOPIFY_API_KEY
+  });
+
 // Function to get Shopify order details
 async function getShopifyOrder(orderId) {
     try {
-        const response = await axios.get(`https://07b36d-7.myshopify.com/admin/api/2022-01/orders/${orderId}.json`, {
-            headers: {
-                'X-Shopify-Access-Token': SHOPIFY_API_KEY
-            }
-        });
-        return response.data.order;
+        // const response = await axios.get(`https://07b36d-7.myshopify.com/admin/api/2022-01/orders/${orderId}.json`, {
+        //     headers: {
+        //         'X-Shopify-Access-Token': SHOPIFY_API_KEY
+        //     }
+        // });
+        // const response = 
+        // return response.data.order;
+    shopify.order
+  .list({ limit: 1 })
+  .then((orders) => console.log(orders))
+  .catch((err) => console.error(err));
     } catch (error) {
         console.error('Error fetching Shopify order:', error.response.data);
         throw new Error('Shopify order not found');
@@ -109,5 +120,5 @@ async function integrateShopifyPipedrive(orderId) {
 }
 
 // Usage example
-const orderId = '5478844530900'; // Replace with the actual order ID
+const orderId = '5479588102356'; // Replace with the actual order ID
 integrateShopifyPipedrive(orderId);
