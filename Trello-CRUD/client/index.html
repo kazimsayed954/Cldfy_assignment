@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trello Card Creator</title>
+    <link rel="stylesheet" href="./styles/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Create a Trello Card</h2>
+      <form id="trello-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required /><br />
+        <label for="desc">Description:</label>
+        <textarea id="desc" name="description" required></textarea><br />
+        <label for="start">Start Date:</label>
+        <input type="date" id="start" name="start" required /><br />
+        <label for="due">Due Date:</label>
+        <input type="date" id="due" name="due" required /><br />
+        <button type="submit">Create Card</button>
+      </form>
+    </div>
+
+    <script>
+      document
+        .getElementById("trello-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent default form submission
+
+          // Get form data
+          const formData = new FormData(event.target);
+          const name = formData.get("name");
+          const description = formData.get("description");
+          const dueDate = formData.get("due");
+          const startDate = formData.get("start");
+
+          // Validate start date is before due date
+          if (new Date(startDate) >= new Date(dueDate)) {
+            alert("Start date must be before due date");
+            return;
+          }
+
+          // Construct API URL
+          const apiUrl = `https://api.trello.com/1/cards?idList=65caed41d44db01c21380c31&key=b37ab7754b58302914cba13467c9ac20&token=ATTA4d27fffa3b67a79b218e6ee6bde696b7226a808e1a9ed546d11fae4a0dc490879D5BAABE&name=${encodeURIComponent(
+            name
+          )}&desc=${encodeURIComponent(description)}&due=${encodeURIComponent(
+            dueDate
+          )}&start=${encodeURIComponent(startDate)}`;
+
+          // Make API call
+          fetch(apiUrl, {
+            method: "POST",
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              alert("Trello card created successfully!");
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("Failed to create Trello card. Please try again later.");
+            });
+        });
+    </script>
+  </body>
+</html>
+<!-- meverik850@tospage.com -->
+<!-- Test@123 -->
